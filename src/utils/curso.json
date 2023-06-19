@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "title": "Curso de Programação",
+    "location": "São Paulo"
+  },
+  {
+    "id": 2,
+    "title": "Curso de Design Gráfico",
+    "location": "Rio de Janeiro"
+  },
+  {
+    "id": 3,
+    "title": "Curso de Marketing Digital",
+    "location": "São Paulo"
+  },
+  {
+    "id": 4,
+    "title": "Curso de Inglês",
+    "location": "Belo Horizonte"
+  },
+  {
+    "id": 5,
+    "title": "Curso de Fotografia",
+    "location": "Porto Alegre"
+  }
+]
