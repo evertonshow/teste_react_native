@@ -13,7 +13,6 @@ const CepBottomSheet = () => {
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState(null);
 
-
   // procurando por cep
   const handleSearch = async () => {
     if (!cep) {
@@ -39,7 +38,7 @@ const CepBottomSheet = () => {
   };
 
   // função que limpa o estado
-  const handleCleanStateAnddres = useCallback(() => {
+  const handleCleanStateAddress = useCallback(() => {
     if (cep === '') {
       setAddress(null);
     }
@@ -54,10 +53,10 @@ const CepBottomSheet = () => {
         value={cep}
         onChangeText={text => {
           setCep(text);
-          handleCleanStateAnddres();
+          handleCleanStateAddress();
         }}
       />
-      <Button color={"#1c47cc"} title="Buscar" onPress={handleSearch}  />
+      <Button color={'#1c47cc'} title="Buscar" onPress={handleSearch} />
 
       {loading ? (
         <View style={styles.viewSpinner}>

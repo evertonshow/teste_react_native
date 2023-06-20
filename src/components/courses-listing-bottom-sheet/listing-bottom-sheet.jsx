@@ -1,5 +1,5 @@
 /**
- * IMPRTS
+ * IMPORTS
  */
 import React from 'react';
 
@@ -11,10 +11,10 @@ import {styles} from './styles';
 
 const CoursesListing = ({title, type, test, ...props}) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity {...props} style={styles.container}>
       <View>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.subTitle}>Perido: 02/07/2023 á 02/07/2025</Text>
+        <Text style={styles.subTitle}>Período: 02/07/2023 á 02/07/2025</Text>
       </View>
       <Text style={styles.matricula}>#Matricular</Text>
     </TouchableOpacity>

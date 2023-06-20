@@ -13,7 +13,7 @@ import CepBottomSheet from './components/cep-bottom-sheet';
 import CoursesJson from './utils/curso.json';
 import {CardOptions} from './components/card-options/card-options';
 
-import {CoursesListing} from './components/courses-isting-bottom-sheet/courses-isting-bottom-sheet';
+import {CoursesListing} from './components/courses-listing-bottom-sheet/courses-listing-bottom-sheet';
 
 // styles
 import {styles} from './styles/global-app';
@@ -31,8 +31,8 @@ const App = () => {
     {id: '3', title: 'Em Breve', type: 'son'},
   ];
 
-  // abrir opcão correta
-  const openListCuros = type => {
+  // abrir opção correta
+  const openListCurses = type => {
     if (type === 'course') {
       bottomSheetCourseRef.current.open();
     }
@@ -50,31 +50,27 @@ const App = () => {
       item?.title.toLowerCase().includes(searchText?.toLowerCase()),
     );
 
-    
     setTimeout(() => {
-      console.log("*&", resultCourse.length)
-      if(resultCourse.length){
+      console.log('*&', resultCourse.length);
+      if (resultCourse.length) {
         setCourses(resultCourse);
-      }else{
-        setCourses([])
+      } else {
+        setCourses([]);
       }
       setLoadingCourses(false);
     }, 1000);
-
-    return;
   };
 
-
-  useEffect(()=> {
-    setCourses(CoursesJson)
-  }, [])
+  useEffect(() => {
+    setCourses(CoursesJson);
+  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.wrapperTitle}>
-        <Text style={styles.title}>Faça buscas Rapidas</Text>
+        <Text style={styles.title}>Faça buscas Rápida</Text>
         <Text style={styles.subTitle}>
-          Pesqueise sobre oque for de seu interese pessoal
+          Pesquise sobre oque for de seu interesse pessoal
         </Text>
       </View>
 
@@ -83,7 +79,7 @@ const App = () => {
           <CardOptions
             key={String(data.id)}
             title={data.title}
-            onPress={() => openListCuros(data.type)}
+            onPress={() => openListCurses(data.type)}
             type={data?.type}
           />
         ))}
@@ -109,7 +105,7 @@ const App = () => {
         </View>
       </BottomSheetRaw>
 
-      {/**LITAGEM DE CURSO */}
+      {/**LISTAGEM DE CURSO */}
       <BottomSheetRaw
         ref={bottomSheetCourseRef}
         closeOnDragDown
@@ -134,30 +130,28 @@ const App = () => {
           </View>
           <>
             {loadingCourses ? (
-              <View
-                style={styles.wrapperLoadingAndText}>
+              <View style={styles.wrapperLoadingAndText}>
                 <SpinnerGap size={32} color="#1c47cc" />
               </View>
             ) : (
               <>
-           
-                {courses.length === 0 ?(
+                {courses.length === 0 ? (
                   <View style={styles.wrapperLoadingAndText}>
-                     <Text style={{color: '#1e1e1e'}}>Nenhum registro encontrado.</Text>
+                    <Text style={{color: '#1e1e1e'}}>
+                      Nenhum registro encontrado.
+                    </Text>
                   </View>
-                ) :(
-                   <FlatList
-                   data={courses}
-                   keyExtractor={text => text.id}
-                   renderItem={({item}) => (
-                     <View style={styles.addressContainer}>
-                       <CoursesListing title={item.title} />
-                     </View>
-                   )}
-                 />
+                ) : (
+                  <FlatList
+                    data={courses}
+                    keyExtractor={text => text.id}
+                    renderItem={({item}) => (
+                      <View style={styles.addressContainer}>
+                        <CoursesListing title={item.title} />
+                      </View>
+                    )}
+                  />
                 )}
-              
-            
               </>
             )}
           </>

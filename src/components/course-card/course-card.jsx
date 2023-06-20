@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text} from 'react-native';
 
 // styles
-import { styles } from "./styles";
+import {styles} from './styles';
 
 const CourseCard = ({title, location}) => {
   return (
@@ -12,6 +12,5 @@ const CourseCard = ({title, location}) => {
     </View>
   );
 };
-
 
 export default CourseCard;

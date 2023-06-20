@@ -1,8 +1,7 @@
 /**
  * IMPORTS
  */
-import { StyleSheet } from "react-native";
-
+import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   input: {
@@ -18,27 +17,25 @@ const styles = StyleSheet.create({
   addressContainer: {
     width: '100%',
     borderWidth: 1,
-    borderColor: "#CDCDCD",
+    borderColor: '#CDCDCD',
     marginTop: 12,
-    padding: 12
+    padding: 12,
   },
   titleAddress: {
     fontSize: 14,
     color: '#1e1e1e',
-    fontWeight: '600'
+    fontWeight: '600',
   },
   viewSpinner: {
     width: '100%',
     flex: 1,
     marginTop: 70,
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });
 
 /**
  * EXPORTS
  */
-export {
-  styles
-}
+export {styles};
