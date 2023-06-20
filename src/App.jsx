@@ -1,122 +1,170 @@
-import React, {useState, useRef} from 'react';
-import {
-  View,
-  Button,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-  Alert,
-  Text,
-} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
+
+import {View, FlatList, Text, TextInput} from 'react-native';
+
 import BottomSheetRaw from 'react-native-raw-bottom-sheet';
 
-import CepBottomSheet from './components/CepBottomSheet';
-import CourseCard from './components/CourseCard';
+import {SpinnerGap} from 'phosphor-react-native';
+
+// components
+import CepBottomSheet from './components/cep-bottom-sheet';
+
+// utils
 import CoursesJson from './utils/curso.json';
+import {CardOptions} from './components/card-options/card-options';
+
+import {CoursesListing} from './components/courses-isting-bottom-sheet/courses-isting-bottom-sheet';
+
+// styles
+import {styles} from './styles/global-app';
 
 const App = () => {
   const bottomSheetRef = useRef(null);
+  const bottomSheetCourseRef = useRef(null);
   const [address, setAddress] = useState(null);
   const [courses, setCourses] = useState([]);
   const [loadingCourses, setLoadingCourses] = useState(false);
 
-  const handleAddressSearch = async data => {
-    setAddress(data);
-    bottomSheetRef.current.open();
-  };
+  const dataOptions = [
+    {id: '1', title: 'Course', type: 'course'},
+    {id: '2', title: 'Buscar Cep', type: 'zip'},
+    {id: '3', title: 'Em Breve', type: 'son'},
+  ];
 
-  const handleCoursesSearch = async () => {
-    if (!address) {
-      Alert.alert('Erro', 'Por favor, digite um CEP válido primeiro');
+  // abrir opcão correta
+  const openListCuros = type => {
+    if (type === 'course') {
+      bottomSheetCourseRef.current.open();
+    }
+    if (type === 'zip') {
+      bottomSheetRef.current.open();
+    } else {
       return;
     }
-
-    setLoadingCourses(true);
-
-    try {
-      // Simulação de busca de cursos próximos
-      // Substitua esta parte pela chamada à API de cursos real
-      // const response = await axios.get('https://api.example.com/courses', {
-      //   params: {
-      //     lat: address.lat,
-      //     lng: address.lng,
-      //   },
-      // });
-
-      const courses = CoursesJson;
-      setCourses(courses);
-    } catch (error) {
-      console.error(error);
-    }
-
-    setLoadingCourses(false);
   };
+
+  // filtragem de curso pelo titulo
+  const filtrarItens = searchText => {
+    setLoadingCourses(true);
+    const resultCourse = CoursesJson?.filter(item =>
+      item?.title.toLowerCase().includes(searchText?.toLowerCase()),
+    );
+
+    
+    setTimeout(() => {
+      console.log("*&", resultCourse.length)
+      if(resultCourse.length){
+        setCourses(resultCourse);
+      }else{
+        setCourses([])
+      }
+      setLoadingCourses(false);
+    }, 1000);
+
+    return;
+  };
+
+
+  useEffect(()=> {
+    setCourses(CoursesJson)
+  }, [])
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Buscar Endereço"
-          onPress={() => bottomSheetRef.current.open()}
-        />
-        <Button title="Buscar Cursos" onPress={handleCoursesSearch} />
+      <View style={styles.wrapperTitle}>
+        <Text style={styles.title}>Faça buscas Rapidas</Text>
+        <Text style={styles.subTitle}>
+          Pesqueise sobre oque for de seu interese pessoal
+        </Text>
       </View>
 
+      <View style={styles.buttonContainer}>
+        {dataOptions.map(data => (
+          <CardOptions
+            key={String(data.id)}
+            title={data.title}
+            onPress={() => openListCuros(data.type)}
+            type={data?.type}
+          />
+        ))}
+      </View>
+
+      {/**BUSCAR POR CEP */}
       <BottomSheetRaw ref={bottomSheetRef}>
         <View style={styles.bottomSheetContainer}>
-          <CepBottomSheet onAddressSearch={handleAddressSearch} />
-
+          <CepBottomSheet />
           {address && (
             <View style={styles.addressContainer}>
-              <Text>CEP: {address.cep}</Text>
-              <Text>Logradouro: {address.logradouro}</Text>
-              <Text>Bairro: {address.bairro}</Text>
-              <Text>Cidade: {address.localidade}</Text>
-              <Text>Estado: {address.uf}</Text>
+              <Text style={styles.titleAddress}>CEP: {address.cep}</Text>
+              <Text style={styles.titleAddress}>
+                Logradouro: {address.logradouro}
+              </Text>
+              <Text style={styles.titleAddress}>Bairro: {address.bairro}</Text>
+              <Text style={styles.titleAddress}>
+                Cidade: {address.localidade}
+              </Text>
+              <Text style={styles.titleAddress}>Estado: {address.uf}</Text>
             </View>
           )}
+        </View>
+      </BottomSheetRaw>
 
-          {loadingCourses ? (
-            <ActivityIndicator size="large" color="#000" />
-          ) : (
-            <View style={styles.coursesContainer}>
-              <FlatList
-                data={courses}
-                renderItem={({item}) => (
-                  <CourseCard title={item.title} location={item.location} />
+      {/**LITAGEM DE CURSO */}
+      <BottomSheetRaw
+        ref={bottomSheetCourseRef}
+        closeOnDragDown
+        customStyles={{
+          wrapper: {
+            flex: 1,
+          },
+          container: {
+            flex: 1,
+            width: '100%',
+          },
+          draggableIcon: {},
+        }}>
+        <View style={styles.bottomSheetContainer}>
+          <View style={styles.addressContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Pesquisar..."
+              placeholderTextColor={'#1e1e1e'}
+              onChangeText={filtrarItens}
+            />
+          </View>
+          <>
+            {loadingCourses ? (
+              <View
+                style={styles.wrapperLoadingAndText}>
+                <SpinnerGap size={32} color="#1c47cc" />
+              </View>
+            ) : (
+              <>
+           
+                {courses.length === 0 ?(
+                  <View style={styles.wrapperLoadingAndText}>
+                     <Text style={{color: '#1e1e1e'}}>Nenhum registro encontrado.</Text>
+                  </View>
+                ) :(
+                   <FlatList
+                   data={courses}
+                   keyExtractor={text => text.id}
+                   renderItem={({item}) => (
+                     <View style={styles.addressContainer}>
+                       <CoursesListing title={item.title} />
+                     </View>
+                   )}
+                 />
                 )}
-                keyExtractor={item => item.id.toString()}
-              />
-            </View>
-          )}
+              
+            
+              </>
+            )}
+          </>
         </View>
       </BottomSheetRaw>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 16,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 16,
-  },
-  bottomSheetContainer: {
-    padding: 16,
-    backgroundColor: '#fff',
-    height: 600,
-  },
-  addressContainer: {
-    marginBottom: 16,
-  },
-  coursesContainer: {
-    maxHeight: 300,
-  },
-});
 
 export default App;

@@ -2,26 +2,26 @@
   {
     "id": 1,
     "title": "Curso de Programação",
-    "location": "São Paulo"
+    "created_at": "10/09/2023"
   },
   {
     "id": 2,
     "title": "Curso de Design Gráfico",
-    "location": "Rio de Janeiro"
+    "created_at": "10/09/2023"
   },
   {
     "id": 3,
     "title": "Curso de Marketing Digital",
-    "location": "São Paulo"
+    "created_at": "10/09/2023"
   },
   {
     "id": 4,
     "title": "Curso de Inglês",
-    "location": "Belo Horizonte"
+    "created_at": "10/09/2023"
   },
   {
     "id": 5,
     "title": "Curso de Fotografia",
-    "location": "Porto Alegre"
+    "created_at": "10/09/2023"
   }
 ]
